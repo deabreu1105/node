@@ -1,0 +1,16 @@
+
+node_modules/
+dist/
+build/
+coverage/
+logs/
+*.log
+*.env
+*.env.local
+*.env.development
+*.env.test
+*.env.production
+
+pnpm-lock.yaml
+pnpm-workspace.yaml
+pnpm-debug.log

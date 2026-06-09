@@ -1,0 +1,21 @@
+@hostname = localhost
+@portDev = 3000
+@hostDev = {{hostname}}:{{portDev}}
+@contentType = application/json
+
+
+### LOCAL: register - Registrar usuario
+POST http://{{hostDev}}/api/auth/register HTTP/1.1
+content-type: {{contentType}}
+
+{
+    "name": "Daniel",
+    "email": "daniel@example.com",
+    "password": "password123",
+    "confirmPassword": "password123"
+}
+
+
+
+
+
