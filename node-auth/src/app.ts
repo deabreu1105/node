@@ -1,4 +1,5 @@
 import { envs } from "./config/envs.js";
+import { MongoDatabase } from "./data/mongodb/index.js";
 import { AppRoutes } from "./presentation/routes.js";
 import { Server } from "./presentation/server.js";
 
@@ -13,6 +14,10 @@ import { Server } from "./presentation/server.js";
 async function main() {
 
     // TODO : await base de datos
+    await MongoDatabase.connect({
+      mongoUrl: envs.MONGO_URL,
+      dbName: envs.MONGO_DB_NAME,
+    });
 
 
     // TODO : inicio de servidor

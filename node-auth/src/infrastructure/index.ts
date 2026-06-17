@@ -15,3 +15,8 @@ export * from './repositories/auth.repository.impl.js';
 // en el repositorio correspondiente, y se encargue de manejar la lógica de acceso a 
 // datos de autenticación, como una base de datos, un servicio externo, etc.
 export * from './datasources/mongodb.auth.datasource.impl.js';
+
+
+// exportamos el mapeador de usuario para que pueda ser utilizado en el datasource correspondiente,
+// y se encargue de mapear los datos de usuario entre la base de datos y la entidad de usuario utilizada en el dominio.
+export * from './mappers/user.mappert.js';

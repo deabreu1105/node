@@ -1,6 +1,8 @@
 
 import type { Request, Response } from "express";
-import { RegisterUserDto } from "../../domain/dtos/auth/register-user.dto.js";
+import { AuthRepository, CustomError, RegisterUserDto } from "../../domain/index.js";
+import { JwtAdapter } from "../../config/index.js";
+import { UserModel } from "../../data/mongodb/index.js";
 
 export class AuthController {
 
@@ -9,31 +11,54 @@ export class AuthController {
   
   // aqui si se aplica la inyección de dependencias, se pueden inyectar servicios, repositorios, etc. 
   // necesarios para el controlador
-  constructor() {
+  constructor(
+    private readonly authRepository: AuthRepository,
+  ) {
     // Aquí se pueden inyectar las dependencias necesarias para el controlador, como servicios, repositorios, etc.
   }
 
 
-  registerUser = ( req: Request, res: Response ) => {
+  // Este handleError es un método privado que se encarga de manejar los errores que puedan ocurrir en los métodos del controlador, 
+  // y devuelve una respuesta con el error correspondiente. Este método se puede utilizar en los métodos del controlador 
+  // para manejar los errores de manera consistente y centralizada.
+  private handleError( error: unknown, res: Response ) {
+    if ( error instanceof CustomError ) {
+      return res.status( error.statusCode ).json({ error: error.message });
+    }
+    console.error( error );
+    res.status( 500 ).json( { error: 'Internal server error' } );
+  }
+
+
+  registerUser = async( req: Request, res: Response ) => {
     // lógica de registro de usuario
+
 
     // validamos los datos de registro utilizando el DTO de registro de usuario, y si hay algún error, 
     // devolvemos una respuesta con el error correspondiente
     const [ errorDto, registerUserDto ] = RegisterUserDto.create(req.body);
 
     // si hay un error en los datos de registro, devolvemos una respuesta con el error correspondiente
-    if ( errorDto ) return res.status(400).json({ error: errorDto });
+    if ( errorDto ) return res.status( 400 ).json({ error: errorDto });
 
-    // aquí se puede llamar al servicio de registro de usuario para registrar al nuevo usuario en la base de datos, por ejemplo:
-    // const user = this.authService.registerUser(registerUserDto);
+    this.authRepository.register(registerUserDto!)
+      .then( async user => {
+        // aquí se puede manejar la respuesta de registro de usuario, por ejemplo, generando un token JWT para el usuario registrado, etc.
+        const token = await JwtAdapter.generateToken({ id: user.id });
+        res.json( { message: 'User registered successfully', user, token } );
+      } )
+      .catch( error => this.handleError( error, res ) ); 
+  }
 
-    // aquí se puede devolver una respuesta con el usuario registrado, por ejemplo:
-    res.json( { message: 'User registered successfully', user: registerUserDto } );
-  
-}
+
+  getUsers = ( req: Request, res: Response ) => {
+    // lógica para obtener los datos del usuario autenticado
+    UserModel.find()
+      .then( users => res.json( { users, user: req.body.user } ) )
+      .catch( error => this.handleError( error, res ) );
+  }
 
   loginUser = ( req: Request, res: Response ) => {
-    // lógica de inicio de sesión de usuario
     res.json({ message: 'Login successful' });
   }
 

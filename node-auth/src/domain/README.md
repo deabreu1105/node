@@ -11,7 +11,7 @@ que gobierna nuestra aplicación
 
 
 ## entities
-Las entidades son bien parecidas a como nosotros vamos a trabajar la i9nformación en Base de datos es decir,
+Las entidades son bien parecidas a como nosotros vamos a trabajar la información en Base de datos es decir,
 como lusen nuestras entradas o nuestros registros en la base de datos es similar pero no es lo mismos
 
 

@@ -7,4 +7,13 @@
 // exportamos el adaptador de configuración envs.ts para que pueda 
 // ser utilizado en toda la aplicación
 export * from './envs.js';
+
+// exportamos validador de datos para que pueda ser utilizado en toda la aplicación
 export * from './validators.js';
+
+// Expòrtamos el adaptador de bcrypt para que pueda ser utilizado en toda la aplicación
+export * from './bcrypt.adapter.js';
+
+
+// exportamos el adaptador de JWT para que pueda ser utilizado en toda la aplicación
+export * from './jwt.adapter.js';
