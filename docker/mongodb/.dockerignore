@@ -1,0 +1,14 @@
+# Archivos de entorno
+.env
+.env.local
+
+# Archivos de git
+.git
+.gitignore
+
+# Documentación
+README.md
+*.md
+
+# Datos locales
+postgres-data/
