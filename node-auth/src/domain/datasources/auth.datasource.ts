@@ -6,7 +6,8 @@
 // lo que permite una mayor flexibilidad y escalabilidad en la aplicación.
 
 import type { UserEntity } from "../entities/user.entity.js";
-import type { RegisterUserDto } from "../dtos/auth/register-user.dto.js";
+
+import type { RegisterUserDto, LoginUserDto } from "../index.js";
 
 
 //  es abstracto porque no se puede instanciar directamente, sino que debe ser extendido por una clase concreta que 
@@ -33,7 +34,7 @@ export abstract class AuthDataSource {
     // Aquí se pueden agregar los métodos abstractos para la fuente de datos de autenticación, como register, login, logout, etc.
 
     // TODO:
-    // abstract login( loginUserDto: LoginUserDto ) : Promise<UserEntity>;
+    abstract login( loginUserDto: LoginUserDto ) : Promise<UserEntity>;
 
 
     abstract register( registerUserDto: RegisterUserDto ) : Promise<UserEntity>;

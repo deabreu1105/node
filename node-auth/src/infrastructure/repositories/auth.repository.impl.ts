@@ -1,4 +1,4 @@
-import type { AuthRepository, RegisterUserDto, UserEntity } from "../../domain/index.js";
+import type { AuthDataSource, AuthRepository, LoginUserDto, RegisterUserDto, UserEntity } from "../../domain/index.js";
 
 
 
@@ -17,9 +17,14 @@ export class AuthRepositoryImpl implements AuthRepository {
     // comunicar con la base de datos, como se van a mapear los datos, etc.
 
     constructor(
-        private readonly authDataSource: AuthRepository
+        private readonly authDataSource: AuthDataSource
     ) {
         // Aquí se pueden inicializar las conexiones a la base de datos, etc.
+    }
+
+
+    login(loginUserDto: LoginUserDto): Promise<UserEntity> {
+        return this.authDataSource.login(loginUserDto);
     }
 
     register( registerUserDto: RegisterUserDto ) : Promise<UserEntity> {

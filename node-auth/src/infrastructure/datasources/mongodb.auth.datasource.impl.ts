@@ -1,6 +1,6 @@
 import { BcryptAdapter } from "../../config/bcrypt.adapter.js";
 import { UserModel } from "../../data/mongodb/index.js";
-import { CustomError, type AuthDataSource, type RegisterUserDto,  UserEntity } from "../../domain/index.js";
+import { CustomError, type AuthDataSource, type RegisterUserDto,  UserEntity, LoginUserDto } from "../../domain/index.js";
 import { UserMapper } from "../index.js";
 
 
@@ -24,6 +24,34 @@ export class MongoDBAuthDataSourceImpl implements AuthDataSource {
         private readonly comparePassword: ComparePasswordFunction = BcryptAdapter.comparePassword,
     ) {
         // Aquí se pueden inicializar las conexiones a la base de datos, etc.
+    }
+
+
+
+
+    async login(loginUserDto: LoginUserDto): Promise<UserEntity> {
+        
+        const { email, password } = loginUserDto;
+        
+        try {
+            // lógica de inicio de sesión utilizando MongoDB
+            // 1 validar si el email existe en la base de datos, si no existe, devolver un error correspondiente
+            const existingUser = await UserModel.findOne({ email: email });
+            if (!existingUser) throw CustomError.badRequest('User does not exist - email');
+
+            // 2 validar la contraseña utilizando el adaptador de bcrypt
+            const isPasswordValid = this.comparePassword(password, existingUser.password);
+            if (!isPasswordValid) throw CustomError.unauthorized('Invalid password');
+
+            // 3 Mapear nuestra respuesta a la entidad de usuario para devolverla al servicio de autenticación
+            return UserMapper.userEntityFromObject(existingUser);
+
+        } catch (error) {
+            if (error instanceof CustomError) {
+                throw error;
+            }
+            throw CustomError.internalServerError();
+        }
     }
 
     async register( registerUserDto: RegisterUserDto ) : Promise<UserEntity> {

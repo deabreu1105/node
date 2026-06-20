@@ -9,6 +9,11 @@
 POST http://{{hostDev}}/api/auth/login HTTP/1.1
 content-type: {{contentType}}
 
+{
+    "email": "andres@example.com",
+    "password": "password827391"
+}
+
 
 
 

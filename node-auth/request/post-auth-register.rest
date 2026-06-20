@@ -9,9 +9,9 @@ POST http://{{hostDev}}/api/auth/register HTTP/1.1
 content-type: {{contentType}}
 
 {
-    "name": "Jesus",
-    "email": "jesus@example.com",
-    "password": "password957314"
+    "name": "Andres",
+    "email": "andres@example.com",
+    "password": "password827391"
 }
 
 

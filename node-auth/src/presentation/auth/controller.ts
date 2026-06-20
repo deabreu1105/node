@@ -1,6 +1,6 @@
 
 import type { Request, Response } from "express";
-import { AuthRepository, CustomError, RegisterUserDto } from "../../domain/index.js";
+import { AuthRepository, CustomError, LoginUser, LoginUserDto, RegisterUser, RegisterUserDto } from "../../domain/index.js";
 import { JwtAdapter } from "../../config/index.js";
 import { UserModel } from "../../data/mongodb/index.js";
 
@@ -41,13 +41,12 @@ export class AuthController {
     // si hay un error en los datos de registro, devolvemos una respuesta con el error correspondiente
     if ( errorDto ) return res.status( 400 ).json({ error: errorDto });
 
-    this.authRepository.register(registerUserDto!)
-      .then( async user => {
-        // aquí se puede manejar la respuesta de registro de usuario, por ejemplo, generando un token JWT para el usuario registrado, etc.
-        const token = await JwtAdapter.generateToken({ id: user.id });
-        res.json( { message: 'User registered successfully', user, token } );
-      } )
-      .catch( error => this.handleError( error, res ) ); 
+    // aquí se puede manejar la lógica de registro de usuario utilizando el caso de uso correspondiente,
+    // y si hay algún error, devolvemos una respuesta con el error correspondiente
+    new RegisterUser( this.authRepository )
+      .execute( registerUserDto! )
+      .then( data => res.json( data ) )
+      .catch( error => this.handleError( error, res ) );
   }
 
 
@@ -58,8 +57,24 @@ export class AuthController {
       .catch( error => this.handleError( error, res ) );
   }
 
+
+
   loginUser = ( req: Request, res: Response ) => {
-    res.json({ message: 'Login successful' });
+    // validamos los datos de inicio de sesión utilizando el DTO de inicio de sesión de usuario, y si hay algún error, 
+    // devolvemos una respuesta con el error correspondiente
+    const [ errorDto, loginUserDto ] = LoginUserDto.login(req.body);
+
+    // si hay un error en los datos de inicio de sesión, devolvemos una respuesta con el error correspondiente
+    if ( errorDto ) return res.status( 400 ).json({ error: errorDto });
+
+    // aquí se puede manejar la lógica de inicio de sesión de usuario utilizando el caso de uso correspondiente,
+    // y si hay algún error, devolvemos una respuesta con el error correspondiente
+    new LoginUser( this.authRepository )
+      .execute( loginUserDto! )
+      .then( data => res.json( data ) )
+      .catch( error => this.handleError( error, res ) );
   }
+
+
 
 }

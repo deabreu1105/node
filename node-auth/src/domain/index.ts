@@ -17,8 +17,18 @@ export * from './repositories/auth.repository.js';
 // exportamos el DTO de registro de usuario para que pueda ser utilizado en el controlador y el servicio correspondiente
 export * from './dtos/auth/register-user.dto.js';
 
+// exportamos el DTO de inicio de sesión de usuario para que pueda ser utilizado en el controlador y el servicio correspondiente
+export * from './dtos/auth/login-user.dto.js';
+
 // exportamos la entidad de usuario para que pueda ser utilizada en el servicio y el repositorio correspondiente
 export * from './entities/user.entity.js';
 
 // exportamos los errores personalizados para que puedan ser utilizados en el controlador y el servicio correspondiente
 export * from './errors/custom.error.js';
+
+
+// exportamos los casos de uso relacionados con la autenticación de usuarios para que puedan ser utilizados en el controlador y el servicio correspondiente
+export * from './use-cases/auth/register-user.use-case.js';
+
+// exportamos el caso de uso de inicio de sesión de usuario para que pueda ser utilizado en el controlador y el servicio correspondiente
+export * from './use-cases/auth/login-user.use-case.js';
