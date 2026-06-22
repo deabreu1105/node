@@ -4,26 +4,26 @@ import { AppRoutes } from "./presentation/routes.js";
 import { Server } from "./presentation/server.js";
 
 
-// Esta es una función anonima autoejecutable, es decir, se ejecuta inmediatamente después de ser definida.
-( () => {
-  // Your code here
+// IIFE: punto de entrada de la aplicación.
+// Se usa una función autoejecutable para poder usar async/await en el nivel raíz.
+( async () => {
   main();
 })();
 
 
 async function main() {
 
-    // TODO : await base de datos
+    // 1. Conectar a la base de datos antes de levantar el servidor.
+    //    Si la conexión falla, lanza un error y el proceso termina.
     await MongoDatabase.connect({
       mongoUrl: envs.MONGO_URL,
       dbName: envs.MONGO_DB_NAME,
     });
 
-
-    // TODO : inicio de servidor
+    // 2. Iniciar el servidor HTTP con el puerto y las rutas configuradas.
     new Server({
-      port: envs.PORT, // se pasa el puerto configurado en las variables de entorno al servidor
-      routes: AppRoutes.routes, // se pasan las rutas principales de la aplicación al servidor
+      port: envs.PORT,
+      routes: AppRoutes.routes,
     }).start();
 }
 

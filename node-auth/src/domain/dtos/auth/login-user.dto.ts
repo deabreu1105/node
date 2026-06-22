@@ -1,4 +1,7 @@
-
+// CAPA: Domain | TIPO: DTO (Data Transfer Object)
+//
+// Valida y transporta los datos necesarios para iniciar sesión.
+// Mismo patrón que RegisterUserDto: constructor privado + factory estático.
 import { Validators } from "../../../config/index.js";
 
 
@@ -6,15 +9,13 @@ import { Validators } from "../../../config/index.js";
 
 export class LoginUserDto {
 
-    // Aquí se pueden agregar las propiedades y métodos del DTO de inicio de sesión de usuario, como email, password, etc.
-    // el constructor es privado para evitar que se puedan crear instancias de la clase sin pasar por el método 
-    // estático login,
     private constructor(
         public email: string,
         public password: string,
     ) {}
 
-    // Método estático para crear una instancia de LoginUserDto
+    // Retorna [error, dto]. Si hay error, el primer elemento contiene el mensaje;
+    // si es exitoso, el primer elemento es '' (vacío) y el segundo el DTO validado.
     static login( object: { [key: string]: any; } ) : [ string?, LoginUserDto? ] {
         const { email, password } = object;
 
@@ -23,10 +24,7 @@ export class LoginUserDto {
         if ( !password ) return ['Password is required'];
         if ( password.length < 6 ) return ['Password must be at least 6 characters long'];
 
-        return [
-            '',  // Si todos los datos son válidos, se devuelve un array vacío para indicar que no hay errores, y se devuelve una instancia del DTO con los datos validados y transformados.
-            new LoginUserDto(email, password)  //Se regresa la instancia del DTO con los datos validados y transformados, en este caso se transforma el email a minúsculas para evitar problemas de mayúsculas y minúsculas en el registro de usuarios.
-        ];
+        return [ '', new LoginUserDto(email, password) ];
     }
 
 }

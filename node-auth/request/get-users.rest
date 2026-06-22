@@ -3,7 +3,7 @@
 @hostDev = {{hostname}}:{{portDev}}
 @contentType = application/json
 
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMzU2Y2ZlNDEzMTM1NWM1NWQ4ZGNjYiIsImlhdCI6MTc4MTg4NjIwNiwiZXhwIjoxNzgxODkzNDA2fQ.mFXaAE6w5TwgfMHyoed1_6oC6sh82e6KzO75ypFyYwg
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMzU5ZGRjZjI5MjA4MmRhOTk2MmJmYyIsImlhdCI6MTc4MjE1MDMzNiwiZXhwIjoxNzgyMTU3NTM2fQ.WeyFKsMgGExXHPlfCYVcMeItUFdkO4isOD4b93KYjMI
 
 ### LOCAL: get users - Obtener usuarios
 GET http://{{hostDev}}/api/auth/users HTTP/1.1

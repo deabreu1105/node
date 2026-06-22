@@ -1,4 +1,3 @@
-
 import jwt from 'jsonwebtoken';
 import { envs } from './index.js';
 
@@ -6,16 +5,12 @@ import { envs } from './index.js';
 const JWT_SEED = envs.JWT_SEED;
 
 
+// Adaptador del patrón Adapter sobre jsonwebtoken.
+// Usa Promises en lugar de callbacks para integrarse con async/await.
 export class JwtAdapter {
 
-    // Aquí se pueden agregar los métodos para manejar la generación y verificación de tokens JWT, 
-    // como generateToken, verifyToken, etc.
-
-    constructor() {
-        // Aquí se puede inicializar cualquier configuración necesaria para el manejo de tokens JWT, por ejemplo:
-        // this.secretKey = process.env.JWT_SECRET_KEY || 'default_secret_key';
-    }
-
+    // Firma un payload y retorna el token como string, o null si falla.
+    // El payload debe contener solo datos no sensibles (ej: { id: user.id }).
     static generateToken( payload: object, duration: string = '2h' ): Promise<string | null> {
         return  new Promise( ( resolve ) => {
             jwt.sign(payload, JWT_SEED, { expiresIn: duration as any }, (err, token) => {
@@ -25,7 +20,7 @@ export class JwtAdapter {
         });
     }
 
-
+    // Verifica la firma del token y retorna el payload tipado, o null si es inválido/expirado.
     static verifyToken<T>( token: string ): Promise<T | null> {
         return new Promise( ( resolve ) => {
             jwt.verify( token, JWT_SEED, (err, decoded) => {
@@ -34,7 +29,5 @@ export class JwtAdapter {
             });
         });
     }
-
-
 
 }
